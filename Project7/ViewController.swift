@@ -6,6 +6,8 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "credits", style: .plain , target: self, action: #selector(creditsTapped))
+        
         let urlString: String
         
         if navigationController?.tabBarItem.tag == 0 {
@@ -54,5 +56,11 @@ class ViewController: UITableViewController {
         let vc = DetailViewController()
         vc.detailItem = petitions[indexPath.row]
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func creditsTapped() {
+        let ac = UIAlertController(title: "Credits", message: "Data Provided by 'We the People API' from the White House", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
     }
 }
