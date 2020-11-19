@@ -8,7 +8,7 @@ class ViewController: UITableViewController {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "credits", style: .plain , target: self, action: #selector(creditsTapped))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "filter", style: .plain , target: self, action: #selector(filterTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(filterTapped))
         
         let urlString: String
         
@@ -72,7 +72,7 @@ class ViewController: UITableViewController {
     }
     
     @objc func filterTapped() {
-        let ac = UIAlertController(title: "Filter by:", message: nil, preferredStyle: .alert)
+        let ac = UIAlertController(title: "Search for:", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
         let filterSubmit = UIAlertAction(title: "Submit", style: .default) {
@@ -93,7 +93,11 @@ class ViewController: UITableViewController {
                 filteredPetitions.append(petition)
                 print(filteredPetitions)
                 tableView.reloadData()
+                return
             }
         }
+        let ac = UIAlertController(title: "\(term) doesn't appear in list", message: "Please try another term", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
     }
 }
