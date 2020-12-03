@@ -87,17 +87,24 @@ class ViewController: UITableViewController {
     func submitFilterTerm(term: String) {
         if term.isEmpty { return }
         
-        filteredPetitions.removeAll(keepingCapacity: true)
-        for petition in petitions {
-            if petition.title.contains(term) {
-                filteredPetitions.append(petition)
-                print(filteredPetitions)
-                tableView.reloadData()
-                return
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.filteredPetitions.removeAll(keepingCapacity: true)
+            for petition in self.petitions {
+                if petition.title.contains(term) {
+                    self.filteredPetitions.append(petition)
+                    DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let ac = UIAlertController(title: "\(term) doesn't appear in list", message: "Please try another term", preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(ac, animated: true)
+                    }
+                }
             }
         }
-        let ac = UIAlertController(title: "\(term) doesn't appear in list", message: "Please try another term", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        present(ac, animated: true)
     }
 }
+
+
